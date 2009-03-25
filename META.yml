@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               Drupal-Admin
-version:            .01
+version:            0.02
 abstract:           screen scraping Perl API to some Drupal admin functions
 author:
     - Dan Urist <durist@frii.com>

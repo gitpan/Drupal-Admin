@@ -7,7 +7,7 @@
 
 package Drupal::Admin;
 
-$VERSION = '.01';
+$VERSION = '0.02';
 
 use Moose;
 use Log::Log4perl qw(:easy);
@@ -81,8 +81,6 @@ sub login {
   $self->_die("Login failed -- reason unkown") unless $self->mech->success; # FIXME
   $self->_die("Login failed -- wrong username/password")
     unless $self->mech->response->decoded_content !~ /unrecognized username or password/;
-
-
 }
 
 # WARNING this has a dependency on an English string
@@ -368,7 +366,7 @@ slash).
 
 Perform login to the site. Takes two required parameters, B<user> and
 B<password>. The user must have administrator privileges within
-drupal.
+drupal. Calls die() on error.
 
 =item B<offline>
 
