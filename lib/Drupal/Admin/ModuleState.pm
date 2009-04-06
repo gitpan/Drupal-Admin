@@ -208,7 +208,10 @@ sub commit {
 
       # Put this in an eval block so it doesn't die() if a field doesn't exist in the current page
       # This happens e.g. when throttling is disabled
-      eval{ $self->mech->field($module->name, $module->checked, $module->index); };
+      # NOTE: using tick() instead of field() doesn't allow us to use the index field,
+      # but field() doesn't seem to work???
+      #eval{ $self->mech->field($module->name, $module->checked, $module->index); };
+      eval{ $self->mech->tick($module->name, $module->value, $module->checked); };
     }
 
     # Commit the changes

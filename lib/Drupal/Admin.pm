@@ -7,7 +7,7 @@
 
 package Drupal::Admin;
 
-$VERSION = '0.02';
+$VERSION = '0.03';
 
 use Moose;
 use Log::Log4perl qw(:easy);
