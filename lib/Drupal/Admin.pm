@@ -7,7 +7,7 @@
 
 package Drupal::Admin;
 
-$VERSION = '0.03';
+$VERSION = '0.04';
 
 use Moose;
 use Log::Log4perl qw(:easy);
@@ -114,20 +114,23 @@ sub update {
   $self->log_trace("Entering update()");
 
   my $url = $self->{baseurl} . '/update.php';
-  $self->mech->get($url);
+  my $response = $self->mech->get($url);
+  $self->_die('Access denied to update.php')
+      if $self->mech->response->decoded_content =~ /access denied/i;
   $self->_update_check_errors;
 
   $self->_die('No "Continue" button on page')
     unless $self->mech->look_down('_tag', 'input', 'type', 'submit', 'value', 'Continue');
-  $self->mech->click_button(value => 'Continue'); #FIXME check existence of button
-  $self->_die("Update failed") unless ($self->mech->success);
+  $self->mech->click_button(value => 'Continue');
+  $self->_die("Update failed on first page") unless ($self->mech->success);
   $self->_update_check_errors;
 
+ 
   $self->_die('No "Update" button on page')
     unless $self->mech->look_down('_tag', 'input', 'type', 'submit', 'value', 'Update');
   $self->mech->click_button(value => 'Update');
 
-  $self->_die("Update failed") unless ($self->mech->success);
+  $self->_die("Update failed on second page") unless ($self->mech->success);
 
   $self->_update_check_errors;
 
